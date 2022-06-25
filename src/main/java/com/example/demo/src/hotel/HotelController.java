@@ -4,6 +4,8 @@ import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.hotel.model.GetAllHotelsInCategoryRes;
 import com.example.demo.src.hotel.model.GetCategoryRes;
+import com.example.demo.src.hotel.model.GetHotelFeedRes;
+import com.example.demo.src.hotel.model.GetHotelInfoRes;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,10 +53,21 @@ public class HotelController {
     @ResponseBody
     @GetMapping("/category/{categoryId}")
     public BaseResponse<List<GetAllHotelsInCategoryRes>> getAllHotelsInCategory(@PathVariable("categoryId") int categoryId) {
-        try{
+        try {
             List<GetAllHotelsInCategoryRes> getAllHotelsInCategoryRes = hotelProvider.getAllHotelsInCategory(categoryId);
             return new BaseResponse<>(getAllHotelsInCategoryRes);
-        }catch(BaseException exception){
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/{hoteIdx}")
+    public BaseResponse<GetHotelFeedRes> getHotelInfo(@PathVariable ("hotelIdx") int hotelIdx){
+        try{
+            GetHotelFeedRes getHotelFeedRes = hotelProvider.getHotelInfoRes(hotelIdx);
+            return new BaseResponse<>(getHotelFeedRes);
+        } catch(BaseException exception){
             return new BaseResponse<>(exception.getStatus());
         }
     }

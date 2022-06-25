@@ -41,18 +41,4 @@ public class MemberController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
-
-    /*@ResponseBody
-    @GetMapping("/{memberIdx}/profile") // (GET) 127.0.0.1:9000/member/img
-    public BaseResponse<GetMemberProfileRes> getMembersImg(@PathVariable("memberIdx") int memberIdx) {
-        try{
-
-            GetMemberImgRes getMembersImgRes = memberProvider.getMembersImgByIdx(memberIdx);
-            return new BaseResponse<>(getMembersImgRes);
-        } catch(BaseException exception){
-            return new BaseResponse<>((exception.getStatus()));
-        }
-    }*/
-
-
 }

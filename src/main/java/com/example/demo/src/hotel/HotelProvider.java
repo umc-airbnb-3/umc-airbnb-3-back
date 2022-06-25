@@ -1,8 +1,8 @@
 package com.example.demo.src.hotel;
 
 import com.example.demo.config.BaseException;
-import com.example.demo.src.hotel.model.GetAllHotelsInCategoryRes;
-import com.example.demo.src.hotel.model.GetCategoryRes;
+import com.example.demo.src.hotel.model.*;
+import com.example.demo.src.ref.user.model.GetUserFeedRes;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class HotelProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
+    
     public List<GetAllHotelsInCategoryRes> getAllHotelsInCategory(int categoryId) throws BaseException {
         try{
             // categoryIdx 존재하지 앖으면 에러
@@ -53,9 +53,25 @@ public class HotelProvider {
     }
 
     private int checkCategoryExists(int categoryId) throws BaseException {
-        try{
+        try {
             return hotelDao.checkCategory(categoryId);
-        }catch(Exception exception){
+        } catch(Exception exception){
+            logger.warn(exception.getMessage());
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public GetHotelFeedRes getHotelInfoRes(int hotelIdx) throws BaseException {
+        try{
+
+            GetHotelInfoRes getHotelInfoRes = hotelDao.getHotelInfo(hotelIdx);
+            List<String> hotelImage = hotelDao.getHotelImage(hotelIdx);
+            List<GetHotelRoomRes> getHotelRoomRes = hotelDao.getHotelRoom(hotelIdx);
+            List<GetHotelAmenityRes> getHotelAmenityRes = hotelDao.getHotelAmenity(hotelIdx);
+
+            return new GetHotelFeedRes(getHotelInfoRes, hotelImage, getHotelRoomRes, getHotelAmenityRes);
+
+        } catch(Exception exception){
             logger.warn(exception.getMessage());
             throw new BaseException(DATABASE_ERROR);
         }

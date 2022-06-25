@@ -2,6 +2,9 @@ package com.example.demo.src.hotel;
 
 import com.example.demo.src.hotel.model.GetAllHotelsInCategoryRes;
 import com.example.demo.src.hotel.model.GetCategoryRes;
+import com.example.demo.src.hotel.model.GetHotelAmenityRes;
+import com.example.demo.src.hotel.model.GetHotelInfoRes;
+import com.example.demo.src.hotel.model.GetHotelRoomRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -29,6 +32,80 @@ public class HotelDao {
                         rs.getString("category_img")
                 ));
     }
+
+    public GetHotelInfoRes getHotelInfo(int hotelIdx) {
+        String getHotelInfoQuery = "SELECT hotel.hotel_id, hotel_title, CONCAT(address, ', ', country) as location,\n" +
+                "       CONCAT(member.last_name, member.first_name) as owner_name, max_capacity, count(hotel_room.bed_cnt) as bedroom_cnt,\n" +
+                "       sum(hotel_room.bed_cnt) as bed_cnt, bathroom_cnt, start_date as check_in, end_date as check_out, hotel_fee, extra_fee, DATEDIFF(end_date,start_date) as accomodation_day,\n" +
+                "       hotel_fee * DATEDIFF(end_date,start_date) as hotel_fee_sum,\n" +
+                "       hotel_fee * DATEDIFF(end_date,start_date) + extra_fee as total_fee, hotel_introduction\n" +
+                "FROM hotel\n" +
+                "LEFT JOIN member ON hotel.owner_id = member.member_id\n" +
+                "LEFT JOIN hotel_room ON hotel.hotel_id = hotel_room.hotel_id\n" +
+                "WHERE hotel.hotel_id = ?;";
+
+        int getHotelInfoParam = hotelIdx;
+        return this.jdbcTemplate.queryForObject(getHotelInfoQuery,
+                (rs, rowNum) -> new GetHotelInfoRes(
+                        rs.getInt("hotel.hotel_id"),
+                        rs.getString("hotel_title"),
+                        rs.getString("location"),
+                        rs.getString("owner_name"),
+                        rs.getInt("max_capacity"),
+                        rs.getInt("bedroom_cnt"),
+                        rs.getInt("bed_cnt"),
+                        rs.getInt("bathroom_cnt"),
+                        rs.getString("check_in"),
+                        rs.getString("check_out"),
+                        rs.getInt("hotel_fee"),
+                        rs.getInt("extra_fee"),
+                        rs.getInt("accomodation_day"),
+                        rs.getInt("hotel_fee_sum"),
+                        rs.getInt("total_fee"),
+                        rs.getString("hotel_introduction"))
+                , getHotelInfoParam);
+    }
+
+    public List<String> getHotelImage(int hotelIdx) {
+        String getHotelImageQuery = "SELECT img\n" +
+                "FROM hotel_introduction_img\n" +
+                "WHERE hotel_introduction_img.hotel_id = ?;";
+
+        int getHotelImageParam = hotelIdx;
+        return this.jdbcTemplate.query(getHotelImageQuery,
+                (rs, rowNum) -> rs.getString("img"),
+                getHotelImageParam
+                );
+    }
+
+    public List<GetHotelRoomRes> getHotelRoom(int hotelIdx) {
+        String getHotelRoomQuery = "SELECT hotel_id, bed_cnt, img\n" +
+                "FROM hotel_room\n" +
+                "WHERE hotel_id = ?;";
+
+        int getHotelRoomParam = hotelIdx;
+        return this.jdbcTemplate.query(getHotelRoomQuery,
+                (rs, rowNum) -> new GetHotelRoomRes(
+                        rs.getInt("hotel_id"),
+                        rs.getInt("bed_cnt"),
+                        rs.getString("img")
+                ),getHotelRoomParam);
+    }
+
+    public List<GetHotelAmenityRes> getHotelAmenity(int hotelIdx) {
+        String getHotelAmenityQuery = "SELECT hotel_id, img, hotel_amenity_introduction\n" +
+                "FROM hotel_amenity\n" +
+                "WHERE hotel_amenity.hotel_id = ?;";
+
+        int getHotelAmenityParam = hotelIdx;
+        return this.jdbcTemplate.query(getHotelAmenityQuery,
+                (rs, rowNum) -> new GetHotelAmenityRes(
+                        rs.getInt("hotel_id"),
+                        rs.getString("img"),
+                        rs.getString("hotel_amenity_introduction")
+                ),getHotelAmenityParam);
+    }
+
 
     public int checkCategory(int categoryId) {
         String checkCategoryQuery = "SELECT EXISTS(SELECT category_id from category where category_id = ?)";
