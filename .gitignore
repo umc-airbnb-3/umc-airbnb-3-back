@@ -223,3 +223,5 @@ gradle-app.setting
 .classpath
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,gradle,java,windows,macos
+*.pem
+logs

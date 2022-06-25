@@ -1,0 +1,14 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: demo
+
+  datasource:
+    platform: mysql
+    url: jdbc:mysql://umc-db.cm87tlyy8iwm.ap-northeast-2.rds.amazonaws.com:3306/UmcDb?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC&autoReconnection=true
+    username: ggyul
+    password: u_khj_8282
+    driver-class-name: com.mysql.cj.jdbc.Driver # mysql 8버전
+    # driver-class-name: com.mysql.jdbc.Driver # mysql 5버전
