@@ -39,11 +39,13 @@ public class HotelProvider {
     }
 
     public List<GetAllHotelsInCategoryRes> getAllHotelsInCategory(int categoryId) throws BaseException {
+        // categoryId 존재하지 앖으면 에러
+        if(checkCategoryExists(categoryId)==0){
+            throw new BaseException(HOTELS_EMPTY_CATEGORY_ID);
+        }
+
         try{
-            // categoryIdx 존재하지 앖으면 에러
-            if(checkCategoryExists(categoryId)==0){
-                throw new BaseException(HOTELS_EMPTY_CATEGORY_ID);
-            }
+            logger.warn(Integer.toString(checkCategoryExists(categoryId)));
             List<GetAllHotelsInCategoryRes> getAllHotelsInCategoryRes = hotelDao.findAllHotelsInCategory(categoryId);
             return getAllHotelsInCategoryRes;
         }catch(Exception exception){
