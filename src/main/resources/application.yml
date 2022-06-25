@@ -7,8 +7,8 @@ spring:
 
   datasource:
     platform: mysql
-    url: jdbc:mysql://umc-db.cm87tlyy8iwm.ap-northeast-2.rds.amazonaws.com:3306/UmcDb?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC&autoReconnection=true
-    username: ggyul
-    password: u_khj_8282
+    url: jdbc:mysql://udemy-instance.crzq43d8oqux.ap-northeast-2.rds.amazonaws.com:3306/UdemyServer
+    username: jerry
+    password: ${secretKey}
     driver-class-name: com.mysql.cj.jdbc.Driver # mysql 8버전
     # driver-class-name: com.mysql.jdbc.Driver # mysql 5버전
