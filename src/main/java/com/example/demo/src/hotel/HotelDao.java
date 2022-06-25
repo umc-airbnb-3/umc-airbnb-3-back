@@ -116,19 +116,21 @@ public class HotelDao {
     }
 
     public List<GetAllHotelsInCategoryRes> findAllHotelsInCategory(int categoryId) {
-        String findAllHotelsInCategoryQuery = "SELECT h.hotel_id,\n" +
-                "       CONCAT(SUBSTRING_INDEX(h.address, ',', 2), ', ', h.country) as region,\n" +
-                "       FORMAT(ST_DISTANCE_SPHERE(POINT(126, 37), h.location) * 0.001, 0) as distance,\n" +
-                "       IF (MONTH(h.start_date)=MONTH(h.end_date),\n" +
-                "           CONCAT(CAST(MONTH(h.start_date) AS CHAR(2)), 'm ', CAST(DAY(h.start_date) AS CHAR(2)),'d', '~', CAST(DAY(h.end_date) AS CHAR(2)), 'd'),\n" +
-                "           CONCAT(CAST(MONTH(h.start_date) AS CHAR(2)), 'm ', CAST(DAY(h.start_date) AS CHAR(2)), 'd', ' ~ ', CAST(MONTH(h.end_date) AS CHAR(2)), 'm', CAST(DAY(h.end_date) AS CHAR), 'd')) as base_date,\n" +
-                "        FORMAT(h.hotel_fee+h.extra_fee,0) as fee,\n" +
-                "        TRUNCATE(AVG((hr.cleanliness + hr.accuracy + hr.communication\n" +
-                "                                   + hr.location + hr.checkin + hr.satisfaction)/6),2) as avg_grade\n" +
-                "from hotel as h\n" +
-                "left join hotel_review as hr on h.hotel_id = hr.hotel_id\n" +
-                "where h.hotel_id=?\n" +
-                "GROUP BY h.hotel_id;";
+        String findAllHotelsInCategoryQuery = "SELECT cl.category_id, hotel_info.hotel_id, region, distance, base_date, fee, avg_grade\n" +
+                "from categoryList as cl\n" +
+                "left join (SELECT h.hotel_id,\n" +
+                "                  CONCAT(SUBSTRING_INDEX(h.address, ',', 2), ', ', h.country) as region,\n" +
+                "                  FORMAT(ST_DISTANCE_SPHERE(POINT(126, 37), h.location) * 0.001, 0) as distance,\n" +
+                "                  IF (MONTH(h.start_date)=MONTH(h.end_date),\n" +
+                "                     CONCAT(MONTH(h.start_date), 'm ', DAY(h.start_date),'d', '~', DAY(h.end_date), 'd'),\n" +
+                "                     CONCAT(MONTH(h.start_date), 'm ', DAY(h.start_date), 'd', ' ~ ', MONTH(h.end_date), 'm', DAY(h.end_date), 'd')) as base_date,\n" +
+                "                  FORMAT(h.hotel_fee+h.extra_fee,0) as fee,\n" +
+                "                  TRUNCATE(AVG((hr.cleanliness + hr.accuracy + hr.communication\n" +
+                "                                             + hr.location + hr.checkin + hr.satisfaction)/6),2) as avg_grade\n" +
+                "            FROM hotel as h\n" +
+                "            left join hotel_review as hr on h.hotel_id = hr.hotel_id\n" +
+                "            GROUP BY h.hotel_id) as hotel_info on hotel_info.hotel_id = cl.hotel_id\n" +
+                "where cl.category_id=?;";
         int findAllHotelsInCategoryParam = categoryId;
 
         String findAllHotelIntroductionImagesQuery = "SELECT img\n" +
