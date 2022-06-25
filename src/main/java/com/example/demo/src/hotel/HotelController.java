@@ -2,6 +2,7 @@ package com.example.demo.src.hotel;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
+import com.example.demo.src.hotel.model.GetAllHotelsInCategoryRes;
 import com.example.demo.src.hotel.model.GetCategoryRes;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
@@ -43,6 +44,17 @@ public class HotelController {
             List<GetCategoryRes> getCategoryRes = hotelProvider.getAllCategories();
             return new BaseResponse<>(getCategoryRes);
         } catch(BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/category/{categoryId}")
+    public BaseResponse<List<GetAllHotelsInCategoryRes>> getAllHotelsInCategory(@PathVariable("categoryId") int categoryId) {
+        try{
+            List<GetAllHotelsInCategoryRes> getAllHotelsInCategoryRes = hotelProvider.getAllHotelsInCategory(categoryId);
+            return new BaseResponse<>(getAllHotelsInCategoryRes);
+        }catch(BaseException exception){
             return new BaseResponse<>(exception.getStatus());
         }
     }
