@@ -62,7 +62,7 @@ public class HotelController {
     }
 
     @ResponseBody
-    @GetMapping("/{hoteIdx}")
+    @GetMapping("/{hotelIdx}")
     public BaseResponse<GetHotelFeedRes> getHotelInfo(@PathVariable ("hotelIdx") int hotelIdx){
         try{
             GetHotelFeedRes getHotelFeedRes = hotelProvider.getHotelInfoRes(hotelIdx);

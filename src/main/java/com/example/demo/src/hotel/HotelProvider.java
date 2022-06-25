@@ -37,7 +37,7 @@ public class HotelProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-    
+
     public List<GetAllHotelsInCategoryRes> getAllHotelsInCategory(int categoryId) throws BaseException {
         try{
             // categoryIdx 존재하지 앖으면 에러
