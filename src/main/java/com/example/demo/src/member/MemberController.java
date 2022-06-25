@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins="*", allowedHeaders = "*")
 @RequestMapping("/members")
 public class MemberController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -30,7 +31,7 @@ public class MemberController {
     }
 
     @ResponseBody
-    @GetMapping("/{memberIdx}/img") // (GET) 127.0.0.1:9000/member/img
+    @GetMapping("/{memberIdx}") // (GET) 127.0.0.1:9000/members/:memberIdx
     public BaseResponse<GetMemberInfoRes> getMembersByIdx(@PathVariable("memberIdx") int memberIdx) {
         try{
 
