@@ -7,7 +7,7 @@ spring:
 
   datasource:
     platform: mysql
-    url: jdbc:mysql://udemy-instance.crzq43d8oqux.ap-northeast-2.rds.amazonaws.com:3306/UdemyServer
+    url: jdbc:mysql://udemy-instance.crzq43d8oqux.ap-northeast-2.rds.amazonaws.com:3306/airbnb_clone
     username: jerry
     password: ${secretKey}
     driver-class-name: com.mysql.cj.jdbc.Driver # mysql 8버전
