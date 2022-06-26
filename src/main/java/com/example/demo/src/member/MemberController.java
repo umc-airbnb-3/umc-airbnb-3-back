@@ -34,7 +34,6 @@ public class MemberController {
     @GetMapping("/{memberIdx}") // (GET) 127.0.0.1:9000/members/:memberIdx
     public BaseResponse<GetMemberInfoRes> getMembersByIdx(@PathVariable("memberIdx") int memberIdx) {
         try{
-
             GetMemberInfoRes getMembersImgRes = memberProvider.getMembersByIdx(memberIdx);
             return new BaseResponse<>(getMembersImgRes);
         } catch(BaseException exception){

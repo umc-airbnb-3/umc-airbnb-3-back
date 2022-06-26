@@ -18,7 +18,6 @@ public class MemberProvider {
     private final MemberDao memberDao;
     private final JwtService jwtService;
 
-
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
