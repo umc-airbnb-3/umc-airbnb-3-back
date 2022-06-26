@@ -136,14 +136,13 @@ public class HotelDao {
         String findAllHotelIntroductionImagesQuery = "SELECT img\n" +
                 "from hotel_introduction_img\n" +
                 "where hotel_id =?;";
-        int findAllHotelIntroductionImagesParam = categoryId;
 
         return this.jdbcTemplate.query(findAllHotelsInCategoryQuery,
                 (rs, rowNum)-> new GetAllHotelsInCategoryRes(
                         rs.getInt("hotel_id"),
                         this.jdbcTemplate.query(findAllHotelIntroductionImagesQuery,
                                 (rs2, rowNum2) -> rs2.getString("img"),
-                                findAllHotelIntroductionImagesParam),
+                                rs.getInt("hotel_id")),
                         // 이미지 리스트
                         rs.getString("region"),
                         rs.getString("distance") + "km 거리",
